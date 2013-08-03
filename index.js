@@ -6,12 +6,19 @@ var extend = require('extend')
 var fly = require('voxel-fly')
 var walk = require('voxel-walk')
 
+var ndarray = require('ndarray')
+var terrain = require('isabella-texture-pack')
+var tiles = ndarray(terrain.data,
+    [16,16,terrain.shape[0]>>4,terrain.shape[1]>>4,4],
+    [terrain.stride[0]*16, terrain.stride[1]*16, terrain.stride[0], terrain.stride[1], terrain.stride[2]], 0)
+
 module.exports = function(opts, setup) {
   setup = setup || defaultSetup
   var defaults = {
-    generate: voxel.generator['Valley'],
+    //generate: voxel.generator['Valley'],
     chunkDistance: 2,
-    materials: ['#fff', '#000'],
+    materials: tiles,
+    //materials: ['#fff', '#000'],
     materialFlatColor: true,
     worldOrigin: [0, 0, 0],
     controls: { discreteFire: true }
@@ -31,7 +38,7 @@ module.exports = function(opts, setup) {
   // game to use it as the main player
   var avatar = createPlayer(opts.playerSkin || 'player.png')
   avatar.possess()
-  avatar.yaw.position.set(2, 14, 4)
+  avatar.yaw.position.set(2, 34, 4)
 
   setup(game, avatar)
   
